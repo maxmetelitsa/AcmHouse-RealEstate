@@ -104,6 +104,20 @@ AcmHouse/
 AcmHouse.Tests/              xUnit tests
 ```
 
+## Project history
+
+**Original version (2024).** I designed and wrote AcmHouse myself as a college project: the idea and feature set, the SQLite database schema, all windows and their design, renting and selling flows, .docx contract generation, shifts, calendar, reports and email sending.
+
+**Refactoring (2026).** I later reviewed and improved the code with the help of [Claude](https://claude.ai), an AI assistant. The application itself stayed the same — its features, user interface, window layout and database structure (apart from a new `Administrators` table) are the original ones. What changed:
+
+- the sign-in, catalog and rental windows were moved to MVVM, with SQL moved into repositories and business rules into `Domain/`;
+- passwords are now stored as hashes, and credentials were removed from the code;
+- a unit test project was added (58 xUnit tests);
+- dead code, duplicated window code and unused NuGet packages were removed, and several bugs were fixed (rental days across New Year, contract numbering, form validation messages);
+- personal data in the demo database was replaced with fictional data.
+
+The rest of the windows (admin panel, trade, profile, calendar) and the contract generation are the original code.
+
 ## Known limitations
 
 - The admin, trade, profile and calendar windows still keep their logic in code-behind.
@@ -122,6 +136,8 @@ AcmHouse.Tests/              xUnit tests
 **Архитектура:** окна входа, каталога и оформления аренды построены по MVVM: логика вынесена в модели представлений, бизнес-правила и репозитории и покрыта 58 тестами на xUnit. Пароли хранятся только в виде хешей PBKDF2.
 
 **Технологии:** C#, .NET Framework 4.8, WPF, MVVM, ADO.NET, SQLite, LINQ, Open XML SDK, xUnit.
+
+**История проекта.** Исходную версию (2024) я спроектировал и написал сам как учебный проект: идею и набор функций, схему базы данных, все окна и их дизайн, оформление аренды и продажи, генерацию договоров, смены, календарь, отчёты и отправку писем. В 2026 году я доработал код с помощью ИИ-ассистента [Claude](https://claude.ai). Само приложение осталось прежним: функции, интерфейс, окна и структура базы данных (кроме новой таблицы администраторов) — исходные. Изменилось следующее: окна входа, каталога и аренды переведены на MVVM, SQL вынесен в репозитории; пароли хранятся в виде хешей; добавлены 58 тестов на xUnit; удалены мёртвый код, дублирование и лишние пакеты; исправлены найденные ошибки; данные в демо-базе заменены на вымышленные. Остальные окна (администратор, торговля, профиль, календарь) и генерация договоров — исходный код.
 
 **Запуск:** откройте `AcmHouse.sln` в Visual Studio 2022, восстановите NuGet-пакеты и нажмите F5.
 Вход администратора: `admin@acmhouse.by` / `Admin1234`, сотрудника: `ivan.petrov@acmhouse.by` / `Demo1234`.
