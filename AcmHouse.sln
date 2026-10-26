@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcmHouse", "AcmHouse\AcmHouse.csproj", "{F9280AA2-E5AB-48FE-A81C-7D918FCD8986}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcmHouse.Tests", "AcmHouse.Tests\AcmHouse.Tests.csproj", "{F416C7F2-7C57-4ED0-88F3-10423B129A74}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F9280AA2-E5AB-48FE-A81C-7D918FCD8986}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9280AA2-E5AB-48FE-A81C-7D918FCD8986}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9280AA2-E5AB-48FE-A81C-7D918FCD8986}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9280AA2-E5AB-48FE-A81C-7D918FCD8986}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F416C7F2-7C57-4ED0-88F3-10423B129A74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F416C7F2-7C57-4ED0-88F3-10423B129A74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F416C7F2-7C57-4ED0-88F3-10423B129A74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F416C7F2-7C57-4ED0-88F3-10423B129A74}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A4C608CF-CBD4-493B-8C82-87A6396EA961}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,101 @@
+﻿<Window x:Class="AcmHouse.Admin.AdminRentalTracking"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" Height="807" Width="1024" Background="Transparent" ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Loaded="Window_Loaded">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <!--Top Section-->
+        <Border BorderThickness="0 0 0 0" BorderBrush="Black" Background="White" CornerRadius="5 5 0 0 " Padding="10" MouseDown ="Border_MouseDown" MouseLeftButtonDown="Border_MouseLeftButtonDown"/>
+        <Grid>
+            <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+                <Button x:Name="WindowOpenFull" Style ="{StaticResource topButtonIcon}" Background="White" Click="WindowOpenFull_Click"/>
+                <Button x:Name="WindowHide" Style ="{StaticResource topButtonIcon}" Background="White" Click="WindowHide_Click"/>
+                <Button x:Name="WindowClose" Style ="{StaticResource topButtonIcon}" Background="White" Click="WindowClose_Click"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="130 0 20 0">
+                <Button x:Name="OffersButton" Style="{StaticResource topButtonsPanel}" Content="Учет предложений" Click="OffersButton_Click" Width="163" Foreground="Black">
+                    <Button.ContextMenu>
+                        <ContextMenu x:Name="OffersContextMenu">
+                            <MenuItem Header="Жилой" Click="ResidentialOffers_Click"/>
+                            <MenuItem Header="Коммерческой" Click="CommercialOffers_Click"/>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Button x:Name="RentButton" Style="{StaticResource topButtonsPanel}" Content="Аренда" Width="71" Foreground="Black" Click="RentButton_Click">
+                    <Button.ContextMenu>
+                        <ContextMenu x:Name="RentContextMenu">
+                            <MenuItem Header="Жилая" Click="Residential_Click"/>
+                            <MenuItem Header="Коммерческая" Click="Commercial_Click"/>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Button x:Name="AccommodationsButton" Style="{StaticResource topButtonsPanel}" Content="Договоры" Width="100" Foreground="Black"/>
+                <Button x:Name="EmployeesButton" Style="{StaticResource topButtonsPanel}" Content="Сотрудники" Click="EmployeesTrackingButton_Click" Width="100" Foreground="Black"/>
+                <Button x:Name="EventsButton" Style="{StaticResource topButtonsPanel}" Content="Мероприятия" Click="EventsTrackingButton_Click" Width="120" Foreground="Black"/>
+                <Button x:Name="ReportButton" Style="{StaticResource topButtonsPanel}" Content="Отчет" Click="ReportButton_Click" Width="58" Foreground="Black"/>
+            </StackPanel>
+
+            <Label HorizontalAlignment="Left" VerticalAlignment="Center" Content="AcmHouse" Foreground="Black" FontFamily="Verdana" FontSize="22" Margin="10"/>
+        </Grid>
+
+
+        <!--Middle Section-->
+
+        <Grid Grid.Row="1" Height="667" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.Background>
+                <SolidColorBrush Color="White"/>
+            </Grid.Background>
+            <Label Content="Заключенные договоры" Foreground="Black" HorizontalAlignment="Center" FontSize="30" FontFamily="Verdana" Margin="0,5,0,546" Grid.ColumnSpan="2"/>
+            <Border Width="468" Height="593" VerticalAlignment="Top" HorizontalAlignment="Center" BorderBrush="Black" BorderThickness="2" CornerRadius="7" Padding="30" Margin="0,64,0,0" Grid.Column="0">
+                <ListBox x:Name="RentalsListBox" SelectionChanged="ListBox_SelectionChanged" Margin="-32,-32,-51,-32" MouseDoubleClick="RentalsListBox_MouseDoubleClick" IsSynchronizedWithCurrentItem="True" BorderBrush="Black" BorderThickness="2" Foreground="Black">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel x:Name="BookingStackPanel">
+                                <TextBlock x:Name="BookingTextBlock" Foreground="Black" FontSize="16" Text="{Binding BookingText}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+
+            <Border Width="468" Height="593" VerticalAlignment="Top" HorizontalAlignment="Center" BorderBrush="Black" BorderThickness="2" CornerRadius="7" Padding="30" Background="DimGray" Margin="0,64,0,0" Grid.Column="1">
+                <StackPanel Margin="-22,-18,-22,-22">
+                    <DataGrid d:ItemsSource="{d:SampleData ItemCount=3}" x:Name="ordersGrid" Height="508" IsReadOnly="True"/>
+                    <Grid Margin="0 ">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="OrderLookButton" Width = "117" Content="Просмотреть" Style="{StaticResource mainButton}" Margin="10,10,10,0" BorderBrush="White" Background="White" Foreground="Black" Grid.Column="0" RenderTransformOrigin="0.483,1.115"/>
+                        <Button x:Name="OrderEditButton" Width = "117" Content="Удалить" Style="{StaticResource mainButton}" Margin="10,10,10,0" BorderBrush="White" Background="White" Foreground="Black" Click="OrderDeleteButton_Click" Grid.Column="1" RenderTransformOrigin="0.483,1.115"/>
+                        <Button x:Name="OrderClearTableButton" Width ="117" Content="Очистить таблицу" Style="{StaticResource mainButton}" Margin="10,10,5,0" BorderBrush="White" Background="White" Foreground="Black" Click="OrderClearTableButton_Click" Grid.Column="2"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <!--Bottom Section-->
+        <Border Grid.Row="2" BorderThickness="0 2 0 0" BorderBrush="Black" CornerRadius="0 0 5 5" Padding="10" Background="White">
+            <Grid>
+                <Label HorizontalAlignment="Left" VerticalAlignment="Center" Content="AcmHouse Co. 2024" Foreground="Black" FontFamily="Verdana" FontSize="18" Margin="10"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+                    <Button x:Name="Exit" Style="{StaticResource bottomButton}" Content="Выйти" Click="Exit_Click" Foreground="Black" FontSize="18"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

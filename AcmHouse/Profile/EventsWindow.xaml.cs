@@ -1,0 +1,335 @@
+﻿using AcmHouse.Functions;
+using AcmHouse.AccommodationOffers;
+using AcmHouse.Authorization;
+using AcmHouse.Calendar;
+using AcmHouse.Rent;
+using AcmHouse.UsersInfo;
+using System;
+using System.Collections.Generic;
+using System.Data.SQLite;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using AcmHouse.SQL_Manager;
+using System.Windows.Threading;
+using System.Windows.Forms;
+using AcmHouse.Trade;
+
+namespace AcmHouse.Profile
+{
+    public partial class EventsWindow : Window
+    {
+        private CalendarViewModel _viewModel;
+        private NotificationService _notificationService;
+
+        public CurrentUser currentUserData = CurrentUserManager.CurrentUser;
+        public SQLiteManager manager;
+
+        public EventsWindow()
+        {
+            InitializeComponent();
+
+            manager = new SQLiteManager();
+            _viewModel = new CalendarViewModel();
+            DataContext = _viewModel;
+            _notificationService = new NotificationService(_viewModel);
+            LoadEventsFromDB();
+        }
+
+        private void AddEventButton_Click(object sender, RoutedEventArgs e)
+        {
+            string title = TitleTextBox.Text;
+            string description = DescriptionTextBox.Text;
+            DateTime startDate = StartDatePicker.Value.HasValue ? StartDatePicker.Value.Value : DateTime.Now;
+            DateTime endDate = EndDatePicker.Value.HasValue ? EndDatePicker.Value.Value : DateTime.Now;
+            int notify = NotifyCheckBox.IsChecked == true ? 1 : 0;
+
+            CalendarEvent calendarEvent = new CalendarEvent(title, description, startDate, endDate, notify);
+
+            _viewModel.AddEvent(calendarEvent);
+            AddEventToDB(calendarEvent);
+
+            TitleTextBox.Clear();
+            DescriptionTextBox.Clear();
+            StartDatePicker.Value = null;
+            EndDatePicker.Value = null;
+            NotifyCheckBox.IsChecked = false;
+        }
+
+        private void RemoveEventButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedEvent = EventsListView.SelectedItem as CalendarEvent;
+            if (selectedEvent != null)
+            {
+                _viewModel.RemoveEvent(selectedEvent);
+                DeleteEventFromDB(selectedEvent.ID);
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Пожалуйста, выберите событие для удаления.");
+            }
+        }
+
+
+        private void AddEventToDB(CalendarEvent calendarEvent)
+        {
+            try
+            {
+                manager.OpenConnection();
+
+                string insertQuery = "INSERT INTO [CalendarEvents] (UserID, Title, Description, StartTime, EndTime, Notify) VALUES (@UserID, @Title, @Description, @StartTime, @EndTime, @Notify);";
+
+                using (SQLiteCommand command = new SQLiteCommand(insertQuery, manager.Connection))
+                {
+                    command.Parameters.AddWithValue("@UserID", currentUserData.ID);
+                    command.Parameters.AddWithValue("@Title", calendarEvent.Title);
+                    command.Parameters.AddWithValue("@Description", calendarEvent.Description);
+                    command.Parameters.AddWithValue("@StartTime", calendarEvent.StartTime);
+                    command.Parameters.AddWithValue("@EndTime", calendarEvent.EndTime);
+                    command.Parameters.AddWithValue("@Notify", calendarEvent.Notify);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        System.Windows.MessageBox.Show("Мероприятие было успешно добавлено");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                manager.CloseConnection();
+            }
+        }
+        private void DeleteEventFromDB(int eventId)
+        {
+            try
+            {
+                manager.OpenConnection();
+
+                string deleteQuery = "DELETE FROM [CalendarEvents] WHERE ID = @ID AND UserID = @UserID";
+
+                using (SQLiteCommand command = new SQLiteCommand(deleteQuery, manager.Connection))
+                {
+                    command.Parameters.AddWithValue("@ID", eventId);
+                    command.Parameters.AddWithValue("@UserID", currentUserData.ID);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                manager.CloseConnection();
+            }
+        }
+
+        private void LoadEventsFromDB()
+        {
+            try
+            {
+                manager.OpenConnection();
+
+                string query = "SELECT * FROM [CalendarEvents] WHERE UserID = @UserID";
+
+                using (SQLiteCommand command = new SQLiteCommand(query, manager.Connection))
+                {
+                    command.Parameters.AddWithValue("@UserID", currentUserData.ID);
+
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int id = int.Parse(reader["ID"].ToString());
+                            string title = reader["Title"].ToString();
+                            string description = reader["Description"].ToString();
+                            DateTime startTime = DateTime.Parse(reader["StartTime"].ToString());
+                            DateTime endTime = DateTime.Parse(reader["EndTime"].ToString());
+                            int notify = int.Parse(reader["Notify"].ToString());
+
+                            CalendarEvent calendarEvent = new CalendarEvent(id, title, description, startTime, endTime, notify);
+                            _viewModel.AddEvent(calendarEvent);
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                manager.CloseConnection();
+            }
+        }
+
+        private void CheckNotifications(object sender, EventArgs e)
+        {
+            foreach (var calendarEvent in _viewModel.Events)
+            {
+                if (calendarEvent.Notify == 1 && calendarEvent.StartTime > DateTime.Now && calendarEvent.StartTime <= DateTime.Now.AddHours(1))
+                {
+                    _notificationService.ShowNotification($"Предстоящее событие: {calendarEvent.Title} в {calendarEvent.StartTime}");
+
+                    var timeToEvent = calendarEvent.StartTime - DateTime.Now;
+                    var timer = new System.Timers.Timer();
+                    timer.Interval = timeToEvent.TotalMilliseconds;
+
+                    timer.Elapsed += (s, ev) =>
+                    {
+                        timer.Stop();
+                        timer.Dispose();
+
+                        var preEventNotificationTime = TimeSpan.FromMinutes(5);
+                        if (timeToEvent > preEventNotificationTime)
+                        {
+                            var reminderTimer = new System.Timers.Timer();
+                            reminderTimer.Interval = preEventNotificationTime.TotalMilliseconds;
+
+                            reminderTimer.Elapsed += (rs, re) =>
+                            {
+                                reminderTimer.Stop();
+                                reminderTimer.Dispose();
+
+                                if (calendarEvent.StartTime <= DateTime.Now)
+                                {
+                                    _notificationService.ShowNotification($"Событие начинается: {calendarEvent.Title} в {calendarEvent.StartTime}");
+                                }
+                            };
+
+                            reminderTimer.Start();
+                        }
+                    };
+
+                    timer.Start();
+                }
+            }
+        }
+
+
+        private void DayEventsButton_Click(object sender, RoutedEventArgs e)
+        {
+            DayEventsWindow window = new DayEventsWindow();
+            window.Show();
+            this.Hide();
+        }
+        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.ToggleMaximizeOnDoubleClick(e);
+        }
+
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragWithLeftButton(e);
+        }
+        private void WindowHide_Click(object sender, RoutedEventArgs e)
+        {
+            this.Minimize();
+        }
+
+        private void WindowOpenFull_Click(object sender, RoutedEventArgs e)
+        {
+            this.ToggleMaximize();
+        }
+
+        private void WindowClose_Click(object sender, RoutedEventArgs e)
+        {
+            WindowExtensions.ExitApplication();
+        }
+        private void OffersButton_Click(object sender, RoutedEventArgs e)
+        {
+            OffersButton.ContextMenu.IsOpen = true;
+        }
+        private void ResidentialOffers_Click(object sender, RoutedEventArgs e)
+        {
+            AccommodationOffersWindow window = new AccommodationOffersWindow(0);
+            window.Show();
+            this.Hide();
+        }
+        private void CommercialOffers_Click(object sender, RoutedEventArgs e)
+        {
+            AccommodationOffersWindow window = new AccommodationOffersWindow(1);
+            window.Show();
+            this.Hide();
+        }
+
+        private void RentButton_Click(object sender, RoutedEventArgs e)
+        {
+            RentButton.ContextMenu.IsOpen = true;
+        }
+        private void Residential_Click(object sender, RoutedEventArgs e)
+        {
+            RentWindow window = new RentWindow(0);
+            window.Show();
+            this.Close();
+        }
+        private void Commercial_Click(object sender, RoutedEventArgs e)
+        {
+            RentWindow window = new RentWindow(1);
+            window.Show();
+            this.Close();
+        }
+        private void EventsButton_Click(object sender, RoutedEventArgs e)
+        {
+            EventsWindow window = new EventsWindow();
+            window.Show();
+            this.Close();
+        }
+        private void ProfileButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProfileWindow window = new ProfileWindow();
+            window.Show();
+            this.Hide();
+        }
+        private void TradeButton_Click(object sender, RoutedEventArgs e)
+        {
+            TradeButton.ContextMenu.IsOpen = true;
+        }
+        private void BuyResidentialProperty_Click(object sender, RoutedEventArgs e)
+        {
+            SaleOffersWindow window = new SaleOffersWindow(0);
+            window.Show();
+            this.Close();
+        }
+        private void BuyCommercialProperty_Click(object sender, RoutedEventArgs e)
+        {
+            SaleOffersWindow window = new SaleOffersWindow(1);
+            window.Show();
+            this.Close();
+        }
+        private void SellResidentialProperty_Click(object sender, RoutedEventArgs e)
+        {
+            PropertySellingWindow window = new PropertySellingWindow(0);
+            window.Show();
+            this.Close();
+        }
+        private void SellCommercialProperty_Click(object sender, RoutedEventArgs e)
+        {
+            PropertySellingWindow window = new PropertySellingWindow(1);
+            window.Show();
+            this.Close();
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            SignInWindow window = new SignInWindow();
+            window.Show();
+            this.Hide();
+        }
+    }
+}

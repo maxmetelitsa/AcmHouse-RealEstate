@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AcmHouse.AccommodationInfo.Accommodation">
+    <Position X="5.5" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AABCAAIAQAAAgAAAACAAAAQAAQAEAAJAACAJAQAACIE=</HashCode>
+      <FileName>AccommodationInfo\Accommodation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AcmHouse.UsersInfo.User">
+    <Position X="1.25" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACCAAgAggAAAEAAQABAAEAABCAACAggAAgIA=</HashCode>
+      <FileName>UsersInfo\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AcmHouse.LandlordInfo.Landlord">
+    <Position X="3.25" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAgAAgAAAEAAQABAAEAABgAACAoAAAgoA=</HashCode>
+      <FileName>LandlordInfo\Landlord.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AcmHouse.SellersInfo.Seller">
+    <Position X="1.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAgAAAAACAAAAABAAAAAAAAAAAIAAAgIA=</HashCode>
+      <FileName>SellersInfo\Seller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AcmHouse.Profile.CalendarEvent">
+    <Position X="10" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAggEAAKAAgACgAMAAgABBAAAAAQAAAAAA=</HashCode>
+      <FileName>Calendar\CalendarEvents.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AcmHouse.SaleAccommodationsInfo.AcmHouse.SaleAccommodationsInfo.SaleAccommodation">
+    <Position X="7.75" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AABBAAIAQQACgAAAACAAAAQAAQgEAABJACAJAQAACIE=</HashCode>
+      <FileName>SaleAccommodationsInfo\SaleAccommodation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AcmHouse.AccommodationExtraInfo.AccommodationDetails">
+    <Position X="5.5" Y="7.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAACgAAAAAAAAAAAgAIAAIBCAAAAAAAAAAA=</HashCode>
+      <FileName>AccommodationExtraInfo\AccommodationDetails.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AcmHouse.OrdersInfo.Order">
+    <Position X="3" Y="7.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAgAAACCAAAAhggAAAQIBAAAAAAEAAAAA=</HashCode>
+      <FileName>OrdersInfo\Order.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

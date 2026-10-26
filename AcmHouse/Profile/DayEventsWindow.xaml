@@ -1,0 +1,106 @@
+﻿<Window x:Class="AcmHouse.Profile.DayEventsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d" Height="768" Width="1024" Background="Transparent" ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <!--Top Section-->
+        <Border BorderThickness="0 0 0 2" BorderBrush="Black" Background="White" CornerRadius="5 5 0 0 " Padding="10" MouseDown="Border_MouseDown" MouseLeftButtonDown="Border_MouseLeftButtonDown">
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+                    <Button x:Name="WindowOpenFull" Style="{StaticResource topButtonIcon}" Background="White" Click="WindowOpenFull_Click"/>
+                    <Button x:Name="WindowHide" Style="{StaticResource topButtonIcon}" Background="White" Click="WindowHide_Click"/>
+                    <Button x:Name="WindowClose" Style="{StaticResource topButtonIcon}" Background="White" Click="WindowClose_Click"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="160 0 20 0">
+                    <Button x:Name="OffersButton" Style="{StaticResource topButtonsPanel}" Content="Предложения" Click="OffersButton_Click" Width="132" Foreground="Black">
+                        <Button.ContextMenu>
+                            <ContextMenu x:Name="OffersContextMenu">
+                                <MenuItem Header="Жилые" Click="ResidentialOffers_Click"/>
+                                <MenuItem Header="Коммерческие" Click="CommercialOffers_Click"/>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+                    <Button x:Name="RentButton" Style="{StaticResource topButtonsPanel}" Content="Аренда" Width="71" Foreground="Black" Click="RentButton_Click">
+                        <Button.ContextMenu>
+                            <ContextMenu x:Name="RentContextMenu">
+                                <MenuItem Header="Жилая" Click="Residential_Click"/>
+                                <MenuItem Header="Коммерческая" Click="Commercial_Click"/>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+                    <Button x:Name="TradeButton" Style="{StaticResource topButtonsPanel}" Content="Торговля" Click="TradeButton_Click" Width="84" Foreground="Black">
+                        <Button.ContextMenu>
+                            <ContextMenu x:Name="TradeContextMenu">
+                                <MenuItem Header="Купить недвижимость">
+                                    <MenuItem.HeaderTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="Купить недвижимость"/>
+                                        </DataTemplate>
+                                    </MenuItem.HeaderTemplate>
+                                    <MenuItem Header="Жилую" Click="BuyResidentialProperty_Click"/>
+                                    <MenuItem Header="Коммерческую" Click="BuyCommercialProperty_Click"/>
+                                </MenuItem>
+                                <MenuItem Header="Продать">
+                                    <MenuItem.HeaderTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="Продать недвижимость"/>
+                                        </DataTemplate>
+                                    </MenuItem.HeaderTemplate>
+                                    <MenuItem Header="Жилую" Click="SellResidentialProperty_Click"/>
+                                    <MenuItem Header="Коммерческую" Click="SellCommercialProperty_Click"/>
+                                </MenuItem>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+                    <Button x:Name="EventsButton" Style="{StaticResource topButtonsPanel}" Content="Календарь мероприятий" Click="EventsButton_Click" Width="211" Foreground="Black"/>
+                    <Button x:Name="ProfileButton" Style="{StaticResource topButtonsPanel}" Content="Профиль" Click="ProfileButton_Click" Width="82" Foreground="Black"/>
+                </StackPanel>
+                <Label HorizontalAlignment="Left" VerticalAlignment="Center" Content="AcmHouse" Foreground="Black" FontFamily="Verdana" FontSize="22" Margin="10"/>
+            </Grid>
+        </Border>
+
+        <!--Middle Section-->
+        <Grid Grid.Row="1">
+            <Grid.Background>
+                <SolidColorBrush Color="White"/>
+            </Grid.Background>
+            <StackPanel Margin="10">
+                <TextBlock Foreground="Black" FontFamily="Verdana" FontSize="21" Text="Ваши мероприятия на сегодня" HorizontalAlignment="Center"/>
+                <ListView x:Name="EventsListView" ItemsSource="{Binding Events}" Margin="0,20,0,10" Height="355">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding Description}"/>
+                                <TextBlock Text="{Binding StartTime}"/>
+                                <TextBlock Text="{Binding EndTime}"/>
+                                <CheckBox IsChecked="{Binding Notify}" Content="Уведомлять"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+
+        </Grid>
+
+        <!--Bottom Section-->
+        <Border Grid.Row="2" BorderThickness="0 2 0 0" BorderBrush="Black" CornerRadius="0 0 5 5" Padding="10" Background="White">
+            <Grid>
+                <TextBlock Margin="15 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" Foreground="Black" Text="AcmHouse Co. 2024"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+                    <Button x:Name="Exit" Style="{StaticResource bottomButton}" Content="Выйти" Click="Exit_Click" Foreground="Black"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

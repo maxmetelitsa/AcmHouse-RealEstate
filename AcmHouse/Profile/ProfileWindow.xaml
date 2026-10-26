@@ -1,0 +1,171 @@
+﻿<Window x:Class="AcmHouse.Profile.ProfileWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" Height="768" Width="1024" Background="Transparent" ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <!--Top Section-->
+        <Border BorderThickness="0 0 0 2" BorderBrush="Black" Background="White" CornerRadius="5 5 0 0 " Padding="10" MouseDown ="Border_MouseDown" MouseLeftButtonDown="Border_MouseLeftButtonDown"/>
+        <Grid>
+            <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+                <Button x:Name="WindowOpenFull" Style ="{StaticResource topButtonIcon}" Background="White" Click="WindowOpenFull_Click"/>
+                <Button x:Name="WindowHide" Style ="{StaticResource topButtonIcon}" Background="White" Click="WindowHide_Click"/>
+                <Button x:Name="WindowClose" Style ="{StaticResource topButtonIcon}" Background="White" Click="WindowClose_Click"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="160 0 20 0">
+                <Button x:Name="OffersButton" Style="{StaticResource topButtonsPanel}" Content="Предложения" Click="OffersButton_Click" Width="132" Foreground="Black">
+                    <Button.ContextMenu>
+                        <ContextMenu x:Name="OffersContextMenu">
+                            <MenuItem Header="Жилые" Click="ResidentialOffers_Click"/>
+                            <MenuItem Header="Коммерческие" Click="CommercialOffers_Click"/>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Button x:Name="RentButton" Style="{StaticResource topButtonsPanel}" Content="Аренда" Width="71" Foreground="Black" Click="RentButton_Click">
+                    <Button.ContextMenu>
+                        <ContextMenu x:Name="RentContextMenu">
+                            <MenuItem Header="Жилая" Click="Residential_Click"/>
+                            <MenuItem Header="Коммерческая" Click="Commercial_Click"/>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Button x:Name="TradeButton" Style="{StaticResource topButtonsPanel}" Content="Торговля" Click="TradeButton_Click" Width="84" Foreground="Black">
+                    <Button.ContextMenu>
+                        <ContextMenu x:Name="TradeContextMenu">
+                            <MenuItem Header="Купить недвижимость">
+                                <MenuItem.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="Купить недвижимость"/>
+                                    </DataTemplate>
+                                </MenuItem.HeaderTemplate>
+                                <MenuItem Header="Жилую" Click="BuyResidentialProperty_Click"/>
+                                <MenuItem Header="Коммерческую" Click="BuyCommercialProperty_Click"/>
+                            </MenuItem>
+                            <MenuItem Header="Продать">
+                                <MenuItem.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="Продать недвижимость"/>
+                                    </DataTemplate>
+                                </MenuItem.HeaderTemplate>
+                                <MenuItem Header="Жилую" Click="SellResidentialProperty_Click"/>
+                                <MenuItem Header="Коммерческую" Click="SellCommercialProperty_Click"/>
+                            </MenuItem>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Button x:Name="EventsButton" Style="{StaticResource topButtonsPanel}" Content="Календарь мероприятий" Click="EventsButton_Click" Width="211" Foreground="Black"/>
+                <Button x:Name="ProfileButton" Style="{StaticResource topButtonsPanel}" Content="Профиль" Width="82" Foreground="Black"/>
+            </StackPanel>
+
+            <Label HorizontalAlignment="Left" VerticalAlignment="Center" Content="AcmHouse" Foreground="Black" FontFamily="Verdana" FontSize="22" Margin="10"/>
+        </Grid>
+
+
+        <!--Middle Section-->
+
+        <Grid Grid.Row="1">
+            <Grid.Background>
+                <SolidColorBrush Color="White"/>
+            </Grid.Background>
+            <Border Width="512" Height="420" VerticalAlignment="Top" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="2" CornerRadius="7" Padding="30" Background="Gray" Margin="5,103,0,0">
+                <StackPanel Margin="0,-18,-22,-22">
+                    <TextBlock Foreground="White" FontFamily="Verdana"  FontSize="20" Margin="0 0 0 10" Text="Личные данные" HorizontalAlignment="Center"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="83*"/>
+                            <ColumnDefinition Width="79*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="NameLabel" HorizontalAlignment="Left" Foreground="White" Content="Инициалы" FontFamily="Verdana" VerticalAlignment="Center" Height="24" Margin="10,23,40,0" Width="120"/>
+                        <TextBox x:Name="NameTextBox" MaxLength="33" Margin="0,25,0,0" Padding="0" Foreground="Black" 
+                            Panel.ZIndex="1" HorizontalAlignment="Center" Width="226" Height="24" FontSize="14" Grid.ColumnSpan="2" VerticalAlignment="Top" IsReadOnly="True"/>
+                    </Grid>
+                    <Label x:Name="NameNotify" HorizontalAlignment="Right" Content="" FontSize="14" Foreground="White" Height="27" Margin="0 0 92 0"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="83*"/>
+                            <ColumnDefinition Width="79*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="SurnameLabel" HorizontalAlignment="Left" Foreground="White" Content="Фамилия" FontFamily="Verdana" VerticalAlignment="Center" Height="24" Margin="10,-2,40,0" Width="120"/>
+                        <TextBox x:Name="SurnameTextBox" Margin="0,0,0,0" Padding="0" Foreground="Black" 
+                            Panel.ZIndex="1" HorizontalAlignment="Center" Width="226" Height="24" FontSize="14" Grid.ColumnSpan="2" VerticalAlignment="Top" IsReadOnly="True"/>
+                        <!--<ICon:PackIconMAterial/>-->
+                    </Grid>
+                    <Label x:Name="SurnameNotify" HorizontalAlignment="Right" Content="" FontSize="14" Foreground="White" Margin="0 0 92 0" Height="27"/>
+                    <!--Email TextBox-->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="83*"/>
+                            <ColumnDefinition Width="79*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="EmailLabel" HorizontalAlignment="Left" Foreground="White" Content="Почта" FontFamily="Verdana" VerticalAlignment="Center" Height="24" Margin="10,-2,40,0" Width="120"/>
+                        <TextBox x:Name="EmailTextBox" Margin="0,0,0,0" Padding="0" Foreground="Black" 
+                            Panel.ZIndex="1" HorizontalAlignment="Center" Width="226" Height="24" FontSize="14" Grid.ColumnSpan="2" VerticalAlignment="Top" IsReadOnly="True"/>
+                        <!--<ICon:PackIconMAterial/>-->
+                    </Grid>
+                    <Label x:Name="EmailNotify" HorizontalAlignment="Right" Content="" FontSize="14" Foreground="White" Margin="0 0 92 0" Height="27"/>
+                    <Grid>
+                        <Label x:Name="PasswordLabel" HorizontalAlignment="Left" Foreground="White" Content="Пароль" FontFamily="Verdana" VerticalAlignment="Top" Height="24" Margin="10,-2,0,0" Width="120"/>
+                        <TextBox x:Name="PasswordTextBox" Margin="0,0,0,0" Padding="0" Foreground="Black" 
+                            Panel.ZIndex="1" HorizontalAlignment="Center" Width="226" Height="24" FontSize="14" IsReadOnly="True"/>
+                        <!--<ICon:PackIconMAterial/>-->
+                    </Grid>
+                    <Label x:Name="PasswordNotify" HorizontalAlignment="Right" Content="" FontSize="14" Foreground="White" Margin="0 0 92 0" Height="27"/>
+                    <Grid>
+                        <Label x:Name="PasswordRepeatLabel" HorizontalAlignment="Left" Foreground="White" Content="Повторный" FontFamily="Verdana" VerticalAlignment="Top" Height="24" Margin="10,-2,0,0" Width="120"/>
+                        <TextBox x:Name="PasswordRepeatTextBox" Margin="0,0,0,0" Padding="0" Foreground="Black" 
+                            Panel.ZIndex="1" HorizontalAlignment="Center" Width="226" Height="24" FontSize="14" IsReadOnly="True"/>
+                        <!--<ICon:PackIconMAterial/>-->
+                    </Grid>
+                    <Label x:Name="PasswordRepeatNotify" HorizontalAlignment="Right" Content="" FontSize="14" Foreground="White" Margin="0 0 92 0" Height="27"/>
+                    <!--Password TextBox-->
+
+                    <Grid Margin="0 5 0 0" Height="48">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="EditProfileButton" Content="Изменить" Style="{StaticResource mainButton}" Margin="0,0,15,0" BorderBrush="White" Background="White" Foreground="Black" Click="EditProfileButton_Click"/>
+                        <Button x:Name="SaveChangesProfileButton" Content="Сохранить изменения" Style="{StaticResource mainButton}" Margin="10,0,5,0" BorderBrush="White" Background="White" Foreground="Black" Click="SaveChangesProfileButton_Click" Grid.Column="1"/>
+                        <Button x:Name="ClearFieldsButton" Content="Очистить поля" Style="{StaticResource mainButton}" Margin="10,0,5,0" BorderBrush="White" Background="White" Foreground="Black" Click="ClearFieldsButton_Click" Grid.Column="2"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+            <ListBox x:Name="RentalsListBox" SelectionChanged="ListBox_SelectionChanged" Margin="531,139,10,221" MouseDoubleClick="RentalsListBox_MouseDoubleClick" IsSynchronizedWithCurrentItem="True" BorderBrush="Black" BorderThickness="2">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel x:Name="BookingStackPanel">
+                            <TextBlock x:Name="BookingTextBlock" Foreground="Black" FontSize="16" Text="{Binding BookingText}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Button x:Name="OrderLookButton" Content="Просмотреть договор" Style="{StaticResource mainButton}" Margin="531,430,355,169" BorderBrush="Black" Background="White" Foreground="Black" RenderTransformOrigin="0.483,1.115" Click="OrderLookButton_Click"/>
+            <Button x:Name="ShiftButton" Content="Открыть смену" Style="{StaticResource mainButton}" Margin="878,30,8,569" BorderBrush="Black" Background="Green" Foreground="White" Click="OpenShiftButton_Click"/>
+            <TextBlock Foreground="Black" FontFamily="Verdana"  FontSize="20" Margin="650,103,0,508" Text="Заключенные договоры" HorizontalAlignment="Left" Width="248"/>
+            <TextBlock Foreground="Black" FontFamily="Verdana"  FontSize="15" Margin="829,430,0,167" HorizontalAlignment="Left" Width="182"><Run Text="Сумма отчислений с"/><LineBreak/><Run Text="заключенных догворов"/></TextBlock>
+            <TextBox x:Name="DeductionsTextBox" Margin="828,480,0,0" Padding="0" Foreground="Black" 
+            Panel.ZIndex="1" HorizontalAlignment="Left" Width="184" Height="24" FontSize="14" VerticalAlignment="Top" IsReadOnly="True" BorderBrush="Black"/>
+        </Grid>
+
+        <!--Bottom Section-->
+        <Border Grid.Row="2" BorderThickness="0 2 0 0" BorderBrush="Black" CornerRadius="0 0 5 5" Padding="10" Background="White">
+            <Grid>
+                <TextBlock Margin="15 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" Foreground="Black" Text="AcmHouse Co. 2024"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+                    <Button x:Name="Exit" Style="{StaticResource bottomButton}" Content="Выйти" Click="Exit_Click" Foreground="Black"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
