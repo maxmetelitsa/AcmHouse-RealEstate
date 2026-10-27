@@ -1,5 +1,7 @@
 # AcmHouse — Real Estate Agency Desktop App
 
+[![CI](https://github.com/maxmetelitsa/AcmHouse-RealEstate/actions/workflows/ci.yml/badge.svg)](https://github.com/maxmetelitsa/AcmHouse-RealEstate/actions/workflows/ci.yml)
+
 A WPF desktop application that automates the daily work of a real estate agency: renting out residential and commercial property, buying and selling property, generating contracts, tracking employee shifts and reporting revenue.
 
 C# · .NET Framework 4.8 · WPF · MVVM · ADO.NET · SQLite · xUnit

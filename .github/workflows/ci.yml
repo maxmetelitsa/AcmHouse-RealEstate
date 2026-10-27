@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    # WPF on .NET Framework needs Windows and the full MSBuild.
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: microsoft/setup-msbuild@v2
+
+      - uses: NuGet/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore AcmHouse.sln
+
+      - name: Build
+        run: msbuild AcmHouse.sln /p:Configuration=Release /m /verbosity:minimal
+
+      - name: Test
+        run: dotnet test AcmHouse.Tests/AcmHouse.Tests.csproj --configuration Release --no-build --verbosity normal
