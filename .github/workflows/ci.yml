@@ -24,4 +24,13 @@ jobs:
         run: msbuild AcmHouse.sln /p:Configuration=Release /m /verbosity:minimal
 
       - name: Test
-        run: dotnet test AcmHouse.Tests/AcmHouse.Tests.csproj --configuration Release --no-build --verbosity normal
+        run: dotnet test AcmHouse.Tests/AcmHouse.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=results.trx" --results-directory TestResults
+
+      - name: Report test count
+        if: always()
+        shell: pwsh
+        run: |
+          [xml]$trx = Get-Content TestResults/results.trx
+          $c = $trx.TestRun.ResultSummary.Counters
+          Write-Output "::notice title=Tests::total=$($c.total) passed=$($c.passed) failed=$($c.failed)"
+          if ([int]$c.total -eq 0) { Write-Output "::error::No tests were discovered"; exit 1 }
